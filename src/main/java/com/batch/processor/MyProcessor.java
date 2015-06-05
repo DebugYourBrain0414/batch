@@ -8,6 +8,12 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.batch.item.ItemProcessor;
 
 public class MyProcessor implements ItemProcessor<File, String>{
+	String parameter;
+	
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
+
 	public String process(File item) throws Exception {
     int bufferSize = Long.valueOf(item.length()).intValue();
     InputStream inputStream = new FileInputStream(item);
@@ -18,6 +24,7 @@ public class MyProcessor implements ItemProcessor<File, String>{
     IOUtils.closeQuietly(inputStream);
    
     System.out.println(buffer);
+    System.out.println("++++++++++"+parameter);
     
 		return null;
 	}

@@ -18,7 +18,9 @@
     <property name="resource" value="classpath:META-INF/input/input" />
   </bean>
   
-  <bean id="myProcessor" class="com.batch.processor.MyProcessor"/>
+  <bean id="myProcessor" class="com.batch.processor.MyProcessor" scope="step" >
+  	<property name="parameter" value="#{jobParameters['swtichValue']}" />
+  </bean>
  
   <bean id="fileWriter" class="com.batch.writer.FileWriter">
     <property name="resource" value="classpath:META-INF/output/output" />
