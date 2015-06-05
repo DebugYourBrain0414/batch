@@ -6,21 +6,21 @@
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
   ">
  
-  <batch:job id="myBatchJob">
-    <batch:step id="step1">
+  <batch:job id="fileToFileJob">
+    <batch:step id="step1" >
       <batch:tasklet>
-        <batch:chunk reader="myReader" writer="myWriter" processor="myProcessor" commit-interval="1" />
+        <batch:chunk reader="fileReader" writer="fileWriter" processor="myProcessor" commit-interval="1" />
       </batch:tasklet>
     </batch:step>
   </batch:job>
  
-  <bean id="myReader" class="com.slee0414.practice.reader.MyReader">
+  <bean id="fileReader" class="com.batch.reader.FileReader">
     <property name="resource" value="classpath:META-INF/input/input" />
   </bean>
   
-  <bean id="myProcessor" class="com.slee0414.practice.batch.processor.MyProcessor"/>
+  <bean id="myProcessor" class="com.batch.processor.MyProcessor"/>
  
-  <bean id="myWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
-    <property name="resource" value="file:META-INF/output/output" />
+  <bean id="fileWriter" class="com.batch.writer.FileWriter">
+    <property name="resource" value="classpath:META-INF/output/output" />
   </bean>
 </beans>
