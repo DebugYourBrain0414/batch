@@ -40,7 +40,7 @@ public class ItemObject {
 	
 	@Override
 	public String toString() {
-		return "ItemObject [first=" + first + ", second=" + second + ", third="
-				+ third + ", fourth=" + fourth + ", fifth=" + fifth + "]";
+		return "first=" + first + ", second=" + second + ", third="
+				+ third + ", fourth=" + fourth + ", fifth=" + fifth;
 	}
 }
