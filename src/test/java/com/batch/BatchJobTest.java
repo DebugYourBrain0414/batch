@@ -1,5 +1,7 @@
 package com.batch;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
@@ -39,7 +41,9 @@ public class BatchJobTest extends TestCase {
 	private HashMap<String, JobParameter> generateJobParameters() {
 		HashMap<String, JobParameter> jobParameters = new HashMap<String, JobParameter>();
   	JobParameter jobParameter = new JobParameter("*", true);
+  	JobParameter jobParameter2 = new JobParameter("/Volumes/DebugYourBrain/Development/practice/batch/src/main/resources/META-INF/output/output".concat(new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date())), true);
   	jobParameters.put("swtichValue", jobParameter);
+  	jobParameters.put("outputFile", jobParameter2);
 		return jobParameters;
 	}
 }

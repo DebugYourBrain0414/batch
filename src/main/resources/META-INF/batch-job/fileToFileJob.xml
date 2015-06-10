@@ -14,15 +14,34 @@
     </batch:step>
   </batch:job>
  
-  <bean id="fileReader" class="com.batch.reader.FileReader">
+  <bean id="fileReader" class="org.springframework.batch.item.file.FlatFileItemReader">
     <property name="resource" value="classpath:META-INF/input/input" />
+    <property name="lineMapper">
+    	<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    		<property name="lineTokenizer">
+    			<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+    				<property name="names" value="First,Second,Third,Fourth,Fifth"/>
+    			</bean>
+    		</property>
+    		<property name="fieldSetMapper">
+    			<bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+    				<property name="prototypeBeanName" value="itemFieldSetMapper"></property>
+    			</bean>
+    		</property>
+    	</bean>
+    </property>
   </bean>
+  
+  <bean id="itemFieldSetMapper" class="com.batch.dto.ItemObject" />
   
   <bean id="myProcessor" class="com.batch.processor.MyProcessor" scope="step" >
   	<property name="parameter" value="#{jobParameters['swtichValue']}" />
   </bean>
  
-  <bean id="fileWriter" class="com.batch.writer.FileWriter">
-    <property name="resource" value="classpath:META-INF/output/output" />
+  <bean id="fileWriter" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
+    <property name="resource" value="file://#{jobParameters['outputFile']}" />
+    <property name="lineAggregator" ref="itemAggregator" />
   </bean>
+  
+  <bean id="itemAggregator" class="org.springframework.batch.item.file.transform.DelimitedLineAggregator" />
 </beans>

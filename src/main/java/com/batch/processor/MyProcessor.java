@@ -1,31 +1,28 @@
 package com.batch.processor;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.batch.item.ItemProcessor;
 
-public class MyProcessor implements ItemProcessor<File, String>{
+import com.batch.dto.ItemObject;
+
+public class MyProcessor implements ItemProcessor<ItemObject, ItemObject>{
 	String parameter;
 	
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 	}
 
-	public String process(File item) throws Exception {
-    int bufferSize = Long.valueOf(item.length()).intValue();
-    InputStream inputStream = new FileInputStream(item);
-   
-    byte[] buffer = new byte[bufferSize];
-   
-    IOUtils.readFully(inputStream, buffer);
-    IOUtils.closeQuietly(inputStream);
-   
-    System.out.println(buffer);
-    System.out.println("++++++++++"+parameter);
-    
-		return null;
+	public ItemObject process(ItemObject item) throws Exception {
+		return attachParameter(item);
+	}
+
+	private ItemObject attachParameter(ItemObject item) {
+		ItemObject itemObject = new ItemObject();
+		itemObject.setFirst(item.getFirst().concat(parameter));
+		itemObject.setSecond(item.getSecond().concat(parameter));
+		itemObject.setThird(item.getThird().concat(parameter));
+		itemObject.setFourth(item.getFourth().concat(parameter));
+		itemObject.setFifth(item.getFifth().concat(parameter));
+		
+		return itemObject;
 	}
 }
