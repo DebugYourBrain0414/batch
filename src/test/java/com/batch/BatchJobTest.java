@@ -28,9 +28,11 @@ public class BatchJobTest extends TestCase {
 
   @Test
   public void testApp() {
+  	String jobName = DBTOFILE_JOBNAME;
+  	
   	try {
-  		String jobParameters = generateJobParameters();
-  		Long jobExecutionId = jobOperator.start(FILETOFILE_JOBNAME, jobParameters);
+  		String jobParameters = generateJobParameters(jobName);
+  		Long jobExecutionId = jobOperator.start(jobName, jobParameters);
   		String jobSummary = jobOperator.getSummary(jobExecutionId);
   		
 			System.out.println("Batch summary: "+jobSummary);
@@ -39,11 +41,11 @@ public class BatchJobTest extends TestCase {
 		}
   }
 
-	private String generateJobParameters() {
+	private String generateJobParameters(String jobName) {
 		String fileNameTimestamp = new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date());
 		
 		StringBuilder builder = new StringBuilder(100);
-		builder.append("outputFile=").append(OUTPUT_PATH).append(FILETOFILE_JOBNAME+"_"+fileNameTimestamp+", ")
+		builder.append("outputFile=").append(OUTPUT_PATH).append(jobName+"_"+fileNameTimestamp+", ")
 		.append("swtichValue=*");
 		
 		return builder.toString();
