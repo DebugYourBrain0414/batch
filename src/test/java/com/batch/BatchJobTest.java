@@ -2,17 +2,12 @@ package com.batch;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,27 +18,34 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class BatchJobTest extends TestCase {
   @Autowired
   protected ApplicationContext applicationContext = null;
+  
+  @Autowired
+  JobOperator jobOperator;
+  
+  private final String OUTPUT_PATH = "/Volumes/DebugYourBrain/Development/practice/batch/src/main/resources/META-INF/output/";
+  private final String FILETOFILE_JOBNAME = "fileToFileJob";
+  private final String DBTOFILE_JOBNAME = "databaseToFileJob";
 
   @Test
   public void testApp() {
-  	JobLauncher jobLauncher = (JobLauncher) applicationContext.getBean("jobLauncher");
-  	Job job = (Job) applicationContext.getBean("fileToFileJob");
-  	HashMap<String, JobParameter> jobParameters = generateJobParameters();
-  	
   	try {
-			JobExecution jobExecution = jobLauncher.run(job, new JobParameters(jobParameters));
-			System.out.println("Batch status: "+jobExecution.getStatus());
+  		String jobParameters = generateJobParameters();
+  		Long jobExecutionId = jobOperator.start(FILETOFILE_JOBNAME, jobParameters);
+  		String jobSummary = jobOperator.getSummary(jobExecutionId);
+  		
+			System.out.println("Batch summary: "+jobSummary);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
   }
 
-	private HashMap<String, JobParameter> generateJobParameters() {
-		HashMap<String, JobParameter> jobParameters = new HashMap<String, JobParameter>();
-  	JobParameter jobParameter = new JobParameter("*", true);
-  	JobParameter jobParameter2 = new JobParameter("/Volumes/DebugYourBrain/Development/practice/batch/src/main/resources/META-INF/output/output".concat(new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date())), true);
-  	jobParameters.put("swtichValue", jobParameter);
-  	jobParameters.put("outputFile", jobParameter2);
-		return jobParameters;
+	private String generateJobParameters() {
+		String fileNameTimestamp = new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date());
+		
+		StringBuilder builder = new StringBuilder(100);
+		builder.append("outputFile=").append(OUTPUT_PATH).append(FILETOFILE_JOBNAME+"_"+fileNameTimestamp+", ")
+		.append("swtichValue=*");
+		
+		return builder.toString();
 	}
 }

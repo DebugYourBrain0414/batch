@@ -3,16 +3,42 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
   ">
+  
+ 	<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
  
   <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
     <property name="dataSource" ref="dataSource" />
     <property name="transactionManager" ref="transactionManager" />
     <property name="databaseType" value="oracle" />
   </bean>
-  
-  <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
  
   <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
     <property name="jobRepository" ref="jobRepository" />
+  </bean>
+  
+  <bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry" />
+  
+  <bean id="jobOperator" class="org.springframework.batch.core.launch.support.SimpleJobOperator" >
+		<property name="jobExplorer">
+			<bean class="org.springframework.batch.core.explore.support.JobExplorerFactoryBean">
+				<property name="dataSource" ref="dataSource" />
+			</bean>
+		</property>
+		<property name="jobRepository" ref="jobRepository" />
+		<property name="jobRegistry" ref="jobRegistry" />
+		<property name="jobLauncher" ref="jobLauncher" />
+  </bean>
+  
+  <bean class="org.springframework.batch.core.configuration.support.AutomaticJobRegistrar">
+  	<property name="applicationContextFactories">
+  		<bean class="org.springframework.batch.core.configuration.support.ClasspathXmlApplicationContextsFactoryBean">
+  			<property name="resources" value="classpath*:/META-INF/batch-job/*.xml" />
+  		</bean>
+  	</property>
+  	<property name="jobLoader">
+  		<bean class="org.springframework.batch.core.configuration.support.DefaultJobLoader">
+  			<property name="jobRegistry" ref="jobRegistry" />
+  		</bean>
+  	</property>
   </bean>
 </beans>
