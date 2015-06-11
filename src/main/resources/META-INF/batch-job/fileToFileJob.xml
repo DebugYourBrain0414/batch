@@ -32,7 +32,7 @@
     </property>
   </bean>
   
-  <bean id="itemFieldSetMapper" class="com.batch.dto.ItemObject" />
+  <bean id="itemFieldSetMapper" class="com.batch.reader.f2f.dto.ItemObject" />
   
   <bean id="myProcessor" class="com.batch.processor.MyProcessor" scope="step" >
   	<property name="parameter" value="#{jobParameters['swtichValue']}" />

@@ -1,4 +1,4 @@
-package com.batch.dto;
+package com.batch.reader.f2f.dto;
 
 public class ItemObject {
 	private String first;

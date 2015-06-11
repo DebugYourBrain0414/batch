@@ -2,7 +2,7 @@ package com.batch.processor;
 
 import org.springframework.batch.item.ItemProcessor;
 
-import com.batch.dto.ItemObject;
+import com.batch.reader.f2f.dto.ItemObject;
 
 public class MyProcessor implements ItemProcessor<ItemObject, ItemObject>{
 	String parameter;
