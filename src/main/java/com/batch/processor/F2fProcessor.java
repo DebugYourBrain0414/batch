@@ -4,7 +4,7 @@ import org.springframework.batch.item.ItemProcessor;
 
 import com.batch.reader.f2f.dto.ItemObject;
 
-public class MyProcessor implements ItemProcessor<ItemObject, ItemObject>{
+public class F2fProcessor implements ItemProcessor<ItemObject, ItemObject>{
 	String parameter;
 	
 	public void setParameter(String parameter) {
