@@ -22,7 +22,7 @@ public class BatchJobTest extends TestCase {
   @Autowired
   JobOperator jobOperator;
   
-  private final String OUTPUT_PATH = "/Volumes/DebugYourBrain/Development/practice/batch/src/main/resources/META-INF/output/";
+  private final String OUTPUT_PATH = "E:/Development/batch/src/main/resources/META-INF/output/";
   private final String FILETOFILE_JOBNAME = "fileToFileJob";
   private final String DBTOFILE_JOBNAME = "databaseToFileJob";
 
@@ -45,7 +45,7 @@ public class BatchJobTest extends TestCase {
 		String fileNameTimestamp = new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date());
 		
 		StringBuilder builder = new StringBuilder(100);
-		builder.append("outputFile=").append(OUTPUT_PATH).append(jobName+"_"+fileNameTimestamp+", ")
+		builder.append("outputFile=").append(OUTPUT_PATH).append(jobName+"_"+fileNameTimestamp+"\n")
 		.append("swtichValue=*");
 		
 		return builder.toString();
