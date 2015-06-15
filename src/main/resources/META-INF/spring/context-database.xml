@@ -19,6 +19,7 @@
 	<!-- create job-meta tables automatically -->
  	<jdbc:initialize-database data-source="dataSource">
  		<jdbc:script location="org/springframework/batch/core/schema-drop-oracle10g.sql" />
-		<jdbc:script location="org/springframework/batch/core/schema-oracle10g.sql" />
+ 		<jdbc:script location="org/springframework/batch/core/schema-oracle10g.sql" />
+ 		<!-- <jdbc:script location="org/springframework/batch/core/schema-drop-oracle10.sql" />  -->
 	</jdbc:initialize-database>
 </beans>

@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,15 +21,17 @@ public class BatchJobTest extends TestCase {
   protected ApplicationContext applicationContext = null;
   
   @Autowired
-  JobOperator jobOperator;
+  private JobOperator jobOperator;
   
-  private final String OUTPUT_PATH = "E:/Development/batch/src/main/resources/META-INF/output/";
+  @Value("${output.path}")
+  private String outputPath;
+  
   private final String FILETOFILE_JOBNAME = "fileToFileJob";
   private final String DBTOFILE_JOBNAME = "databaseToFileJob";
 
   @Test
   public void testApp() {
-  	String jobName = DBTOFILE_JOBNAME;
+  	String jobName = FILETOFILE_JOBNAME;
   	
   	try {
   		String jobParameters = generateJobParameters(jobName);
@@ -45,7 +48,7 @@ public class BatchJobTest extends TestCase {
 		String fileNameTimestamp = new SimpleDateFormat("MMddYYYYHHmmSS").format(new Date());
 		
 		StringBuilder builder = new StringBuilder(100);
-		builder.append("outputFile=").append(OUTPUT_PATH).append(jobName+"_"+fileNameTimestamp+"\n")
+		builder.append("outputFile=").append(outputPath).append(jobName+"_"+fileNameTimestamp+"\n")
 		.append("swtichValue=*");
 		
 		return builder.toString();
